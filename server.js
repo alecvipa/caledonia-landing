@@ -30,7 +30,7 @@ app.set("view engine", "handlebars");
 
 
 // Routes
-app.get('/', function (req, res) {
+app.get('/home', function (req, res) {
     // res.redirect(targetBaseUrl);
     res.render('home');
 
