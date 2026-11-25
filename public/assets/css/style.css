@@ -147,6 +147,8 @@ p {
     min-width: 350px !important;
 }
 
+
+
 @media (max-width: 600px) {
     #beforeAfterTrack img {
         height: 220px !important;
