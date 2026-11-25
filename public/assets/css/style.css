@@ -147,6 +147,14 @@ p {
     min-width: 350px !important;
 }
 
+@media (max-width: 600px) {
+    #beforeAfterTrack img {
+        height: 220px !important;
+        object-fit: contain !important;
+        background-color: #111114 !important;
+    }
+}
+
 
 
 @media only screen and (min-width : 992px) {

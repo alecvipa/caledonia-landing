@@ -41,9 +41,14 @@ app.get('/', function (req, res) {
     res.render('home');
 
 });
-app.get('/contact', function (req, res) {
+app.get('/privacy-policy', function (req, res) {
     // res.redirect(targetBaseUrl);
-    res.render('home');
+    res.render('privacy-policy');
+
+});
+app.get('/terms', function (req, res) {
+    // res.redirect(targetBaseUrl);
+    res.render('terms');
 
 });
 // app.get('/inicio', function (req, res) {
@@ -57,12 +62,17 @@ app.get('/contact', function (req, res) {
 // })
 
 
-// Nodemailer route
+// Nodemailer route — DF Elite Coach (Video Gate)
+app.post("/api/video-lead", function (request, response) {
+    const name = (request.body.name || "").trim();
+    const userEmail = (request.body.email || "").trim();
 
-app.post("/ajax/email", function (request, response) {
-    console.log(email);
+    if (!name || !userEmail) {
+        return response.status(400).json({ ok: false, message: "Nom et e-mail requis." });
+    }
+
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         secure: false,
         port: 25,
         auth: {
@@ -74,20 +84,33 @@ app.post("/ajax/email", function (request, response) {
         }
     });
 
+    const htmlBody = `
+        <div style="font-family: Arial, sans-serif; color: #111111; line-height: 1.6;">
+            <h2 style="margin-bottom: 12px;">Nouveau prospect — Présentation vidéo DF Elite Coach</h2>
+            <p><strong>Nom :</strong> ${name}</p>
+            <p><strong>E-mail :</strong> <a href="mailto:${userEmail}">${userEmail}</a></p>
+            <p style="color: #666666; font-size: 13px; margin-top: 16px;">
+                Ce contact a renseigné ses coordonnées pour accéder à la vidéo de présentation sur le site DF Elite Coach.
+            </p>
+        </div>
+    `;
 
-    var htmlBody = `<h2>Correo de contacto</h2><p>Nombre: ${request.body.name} </p><p> Correo electrónico: <a href='mailto: ${request.body.email}'>${request.body.email}</a></p><p>Mensaje:${request.body.message} </p>`;
-    var mail = {
-        from: '"Team: Xyncs Web Studio',
-        to: 'hebrit_626@hotmail.com',
-        subject: '¡Te ha llegado un correo en Vilpa Films!',
+    const mail = {
+        from: `"DF Elite Coach" <${email}>`,
+        to: "c4academy@aol.com", // Reemplaza con el correo de Dimitri
+        replyTo: userEmail,
+        subject: `Nouveau prospect vidéo — ${name}`,
         html: htmlBody
     };
+
     transporter.sendMail(mail, function (err, info) {
         if (err) {
-            return console.log(err);
+            console.log(err);
+            return response.status(500).json({ ok: false, message: "Erreur lors de l'envoi." });
         } else {
-            console.log("message sent!");
-        };
+            console.log("DF Elite Coach video lead sent!");
+            return response.status(200).json({ ok: true });
+        }
     });
 });
 

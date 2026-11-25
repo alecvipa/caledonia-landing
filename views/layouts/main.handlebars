@@ -59,9 +59,9 @@
         }
 
         #df-navbar .df-brand-logo img {
-            height: 46px !important;
+            height: 58px !important;
             width: auto !important;
-            max-height: 46px !important;
+            max-height: 58px !important;
             object-fit: contain !important;
             border-radius: 4px;
             display: block;
@@ -98,7 +98,7 @@
                     </a>
 
                     <ul class="right hide-on-med-and-down" style="display: flex; align-items: center; gap: 6px;">
-                        <li><a href="#presentation-video" style="font-size: 0.9rem;">Méthode</a></li>
+                        <li><a href="#methode" style="font-size: 0.9rem;">Méthode</a></li>
                         <li><a href="#programmes" style="font-size: 0.9rem;">Programmes</a></li>
                         <li><a href="#transformations" style="font-size: 0.9rem;">Résultats</a></li>
                         <li><a href="#temoignages" style="font-size: 0.9rem;">Avis</a></li>
@@ -126,7 +126,7 @@
                         style="height: 42px; width: auto; border-radius: 4px; display: block;">
                 </a>
             </li>
-            <li><a href="#presentation-video" class="sidenav-close grey-text text-lighten-2">Méthode en vidéo</a></li>
+            <li><a href="#methode" class="sidenav-close grey-text text-lighten-2">Méthode en vidéo</a></li>
             <li><a href="#programmes" class="sidenav-close grey-text text-lighten-2">Programmes (6 &amp; 12 mois)</a>
             </li>
             <li><a href="#transformations" class="sidenav-close grey-text text-lighten-2">Avant / Après</a></li>
@@ -191,10 +191,16 @@
                             Informations
                         </h6>
                         <ul style="line-height: 2;">
-                            <li><a href="/privacy" class="grey-text text-lighten-2" style="font-size: 0.9rem;">Politique
-                                    de confidentialité</a></li>
-                            <li><a href="/contact" class="grey-text text-lighten-2" style="font-size: 0.9rem;">Demander
-                                    un échange</a></li>
+                            <li>
+                                <a href="/privacy-policy" class="grey-text text-lighten-1">
+                                    Politique de confidentialité
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/terms" class="grey-text text-lighten-1">
+                                    Conditions générales
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -260,6 +266,55 @@
                 });
             });
         });
+    </script>
+    <script>
+        (function () {
+            if (localStorage.getItem('dfVideoUnlocked') === '1') {
+                var overlay = document.getElementById('videoGateOverlay');
+                if (overlay) overlay.style.display = 'none';
+            }
+        })();
+
+        function unlockCoachVideo(event) {
+            event.preventDefault();
+            var nameInput = document.getElementById('leadName');
+            var emailInput = document.getElementById('leadEmail');
+            var submitBtn = document.getElementById('videoGateSubmitBtn');
+
+            var payload = {
+                name: nameInput ? nameInput.value.trim() : '',
+                email: emailInput ? emailInput.value.trim() : ''
+            };
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Envoi en cours...';
+            }
+
+            fetch('/api/video-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(function (response) {
+                    if (!response.ok) throw new Error('Request failed');
+                    return response.json();
+                })
+                .then(function () {
+                    localStorage.setItem('dfVideoUnlocked', '1');
+                    var overlay = document.getElementById('videoGateOverlay');
+                    if (overlay) overlay.style.display = 'none';
+                })
+                .catch(function () {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Voir la vidéo maintenant';
+                    }
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                });
+
+            return false;
+        }
     </script>
 </body>
 </body>
