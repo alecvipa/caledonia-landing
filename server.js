@@ -35,6 +35,12 @@ app.get('/home', function (req, res) {
     res.render('home');
 
 });
+// Routes
+app.get('/', function (req, res) {
+    // res.redirect(targetBaseUrl);
+    res.render('home');
+
+});
 app.get('/contact', function (req, res) {
     // res.redirect(targetBaseUrl);
     res.render('home');
