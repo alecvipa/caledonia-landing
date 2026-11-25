@@ -279,12 +279,19 @@
             event.preventDefault();
             var nameInput = document.getElementById('leadName');
             var emailInput = document.getElementById('leadEmail');
+            var phoneInput = document.getElementById('leadPhone');
             var submitBtn = document.getElementById('videoGateSubmitBtn');
 
             var payload = {
                 name: nameInput ? nameInput.value.trim() : '',
-                email: emailInput ? emailInput.value.trim() : ''
+                email: emailInput ? emailInput.value.trim() : '',
+                phone: phoneInput ? phoneInput.value.trim() : ''
             };
+
+            if (!payload.name || !payload.email || !payload.phone) {
+                alert('Veuillez renseigner votre nom, votre adresse e-mail et votre numéro de téléphone.');
+                return false;
+            }
 
             if (submitBtn) {
                 submitBtn.disabled = true;

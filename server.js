@@ -61,14 +61,14 @@ app.get('/terms', function (req, res) {
 //     res.render(params);
 // })
 
-
 // Nodemailer route — DF Elite Coach (Video Gate)
 app.post("/api/video-lead", function (request, response) {
     const name = (request.body.name || "").trim();
     const userEmail = (request.body.email || "").trim();
+    const phone = (request.body.phone || "").trim();
 
-    if (!name || !userEmail) {
-        return response.status(400).json({ ok: false, message: "Nom et e-mail requis." });
+    if (!name || !userEmail || !phone) {
+        return response.status(400).json({ ok: false, message: "Nom, e-mail et téléphone requis." });
     }
 
     const transporter = nodemailer.createTransport({
@@ -89,6 +89,7 @@ app.post("/api/video-lead", function (request, response) {
             <h2 style="margin-bottom: 12px;">Nouveau prospect — Présentation vidéo DF Elite Coach</h2>
             <p><strong>Nom :</strong> ${name}</p>
             <p><strong>E-mail :</strong> <a href="mailto:${userEmail}">${userEmail}</a></p>
+            <p><strong>Téléphone :</strong> <a href="tel:${phone}">${phone}</a></p>
             <p style="color: #666666; font-size: 13px; margin-top: 16px;">
                 Ce contact a renseigné ses coordonnées pour accéder à la vidéo de présentation sur le site DF Elite Coach.
             </p>
@@ -97,7 +98,7 @@ app.post("/api/video-lead", function (request, response) {
 
     const mail = {
         from: `"DF Elite Coach" <${email}>`,
-        to: "c4academy@aol.com", // Reemplaza con el correo de Dimitri
+        to: "dimitri@dfelitecoach.com",
         replyTo: userEmail,
         subject: `Nouveau prospect vidéo — ${name}`,
         html: htmlBody
