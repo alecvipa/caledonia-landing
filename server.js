@@ -25,9 +25,15 @@ app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Redirect to https://xyncs.com
-// const targetBaseUrl = 'https://www.vilpafilms.com/home';
+const targetBaseUrl = 'https://www.dfelitecoach.com/home';
 
 
+// Routes
+app.get('/', function (req, res) {
+    res.redirect(targetBaseUrl);
+    // res.render('home');
+
+});
 
 // Routes
 app.get('/home', function (req, res) {
@@ -35,6 +41,7 @@ app.get('/home', function (req, res) {
     res.render('home');
 
 });
+
 // Routes
 app.get('/', function (req, res) {
     // res.redirect(targetBaseUrl);
